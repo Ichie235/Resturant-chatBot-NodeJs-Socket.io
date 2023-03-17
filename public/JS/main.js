@@ -46,6 +46,14 @@ socket.on('food menu',(food)=>{
   chatMessages.scrollTop = chatMessages.scrollHeight;
 })
 
+//Resturant Current Order Menu from server
+socket.on('CurrentOrder',(order)=>{
+    console.log(order)
+    outputFoodOrder(order)
+      // Scroll down
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+})
+
 chatForm.addEventListener('submit',(e)=>{
     e.preventDefault();
 
@@ -69,8 +77,8 @@ function outputBotMessage(message){
     div.classList.add('chats')
     div.innerHTML=`
    
-    <p>${message.username} <span>${message.time}</span></p>
-    <p class="text" style="color: red;">${message.text}</p>
+    <p style="text-align: left;>${message.username} <span>${message.time}</span></p>
+    <p class="text" style="color:red;text-align:left;">${message.text}</p>
    `;
     document.querySelector('.chat-messages').appendChild(div)
 }
@@ -81,7 +89,7 @@ function outputResturantChat(chatMsg){
     div.classList.add('chats')
     div.innerHTML=`
     <div class="card mb-2 mt-3 ">
-    <div class="card-body">
+    <div class="card-body" style="text-align: right;>
     <p>Ichie <span>${chatMsg.time}</span></p>
     <p class="text" style="color: red;">${chatMsg.text}</p>
     </div>
@@ -89,14 +97,14 @@ function outputResturantChat(chatMsg){
     document.querySelector('.chat-messages').appendChild(div)
 }
 
-//output chat message from users to DOM
+//output Select Menu message from Server  to DOM
 function outputResturantMenu(menu){
     const div = document.createElement('div')
     div.classList.add('chats')
     div.innerHTML=`
-    <div class="card mb-2 mt-3 ">
+    <div class="card mb-2 mt-3 style="text-align: left;">
     <div class="card-body">
-    <ul>
+    <ul style="list-style-type:none;">
     <li>
     Select 1 to Place an order</li>
     <li>Select 99 to checkout order</li>
@@ -113,9 +121,24 @@ function outputFoodStore(menu){
     const div = document.createElement('div')
     div.classList.add('chats')
     div.innerHTML=`
-    <div class="card mb-2 mt-3 ">
+    <div class="card mb-2 mt-3" style="text-align: left>
     <div class="card-body">
-    ${Object.values(menu).map(key=>`<li>${Object.values(key).join(' ')}</li>`).join('')}
+    <p class="m-2">Please select food item to record</p>
+    ${Object.values(menu).map(key=>`<li style="list-style-type:none;">${Object.values(key).join(' .')}</li>`).join('')}
+    </div>
+    </div>`;
+    document.querySelector('.chat-messages').appendChild(div)
+}
+
+function outputFoodOrder(order){
+    const div = document.createElement('div')
+    div.classList.add('chats')
+    div.innerHTML=`
+    <div class="card mb-2 mt-3" style="text-align: left>
+    <div class="card-body">
+    <p class="m-2">Your current order :</p>
+    ${order.products.map(key=>`<li>${key.title}</li>`).join('')} 
+   <div><b>TOTAL PRICE IS</b>=> ${order.totalPrice} </div>
     </div>
     </div>`;
     document.querySelector('.chat-messages').appendChild(div)

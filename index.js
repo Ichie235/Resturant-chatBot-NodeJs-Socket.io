@@ -12,10 +12,12 @@ const app = express()
 // This is needed in other to use socket.io
 const server = http.createServer(app)
 const io = socketio(server);
-
+ 
 //Progress Order of the logic cases
 let progressCount = 0
 let progress=2
+
+console.log(foodStore.roastedCorn.title)
   
   
 
@@ -24,9 +26,9 @@ io.on('connection',(socket)=>{
     console.log(`User ${socket.id} connected....`)
 
     //Emit a message when a user connects.
-    socket.emit('message',formatMessages('Resturant-chat',`Welcome to the resturant`))
-    socket.emit('message',formatMessages('Resturant-chat',`Please input menu to see options`))
-
+    socket.emit('message',formatMessages('Resturant-chat',`Welcome to the resturant.<br>
+    Please input <b> menu</b> to see options`))
+   
     //Listen for ResturantChat messgaes from client end
     socket.on('ResturantChat',(msg)=>{
         //   console.log(msg)
@@ -37,7 +39,7 @@ io.on('connection',(socket)=>{
             case "menu":
                 console.log('this is menu',msg)
                 socket.emit('MenuOption')
-                break          
+                break             
         }
 
         switch(progressCount){
@@ -47,7 +49,7 @@ io.on('connection',(socket)=>{
                         console.log('this is food item')
                         socket.emit('food menu',foodStore)
                         progressCount =1
-                        break  
+                        break
                 }
                 break
             case 1:
@@ -56,8 +58,10 @@ io.on('connection',(socket)=>{
                         switch(progress){
                             case 2:
                                 console.log('Roasted Corn')
-                               console.log(Cart.save(foodStore.roastedCorn))
-
+                               Cart.save(foodStore.roastedCorn)
+                               socket.emit('message',formatMessages('Resturant-chat', 
+                               `Order for ${Object.values(foodStore.roastedCorn.title).join('')}
+                               Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`))
                                break   
                         }
                         break
@@ -65,7 +69,10 @@ io.on('connection',(socket)=>{
                          switch(progress){
                             case 2:
                                 console.log('Bole')
-                                console.log(Cart.save(foodStore.bole))
+                                Cart.save(foodStore.bole)
+                                socket.emit('message',formatMessages('Resturant-chat', 
+                                `Order for ${Object.values(foodStore.bole.title).join('')}
+                                Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`))
                                 break
                          }
                       break
@@ -73,7 +80,10 @@ io.on('connection',(socket)=>{
                          switch(progress){
                             case 2:
                                 console.log('Garri')
-                                console.log(Cart.save(foodStore.garri))
+                                Cart.save(foodStore.garri)
+                                socket.emit('message',formatMessages('Resturant-chat', 
+                                `Order for ${Object.values(foodStore.bole.title).join('')}
+                                Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`))
                                 break
                          }
                       break  
@@ -81,7 +91,10 @@ io.on('connection',(socket)=>{
                         switch(progress){
                            case 2:
                                console.log('Ewa')
-                               console.log(Cart.save(foodStore.ewa))
+                               Cart.save(foodStore.ewa)
+                               socket.emit('message',formatMessages('Resturant-chat', 
+                               `Order for ${Object.values(foodStore.ewa.title).join('')}
+                               Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`))
                                break
                         }
                      break  
@@ -89,26 +102,40 @@ io.on('connection',(socket)=>{
                         switch(progress){
                            case 2:
                                console.log('Abacha')
-                               console.log(Cart.save(foodStore.garri))
+                               Cart.save(foodStore.garri)
+                               socket.emit('message',formatMessages('Resturant-chat', 
+                               `Order for ${Object.values(foodStore.garri.title).join('')}
+                               Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`))
                                progressCount = 0
                                break
                         }
                         progressCount= 0
                      break         
                 }
-               
-                break       
+                progressCount= 0
+                break  
         }
         switch(msg){
             case "99":
               if(Cart.getCart()===null){
-                       console.log('This cart is empty')
+                socket.emit('message',formatMessages('Resturant-chat',`No order to place.<br>Please select <b> 1 </b> to see list of food items`))
                       }else{
                           console.log(Cart.getCart())
-                       
+                          socket.emit('message',formatMessages('Resturant-chat',`Order placed.<br>Please select <b> 97 </b> to see current order`)) 
                      }
                   progressCount = 0   
-                 break 
+               break 
+        }
+        switch(msg){
+            case "97":
+              if(Cart.getCart()===null){
+                socket.emit('message',formatMessages('Resturant-chat',`No order to place.<br>Please select <b> 1 </b> to see list of food items`))
+                      }else{
+                          console.log(Cart.getCart())
+                          socket.emit('CurrentOrder',Cart.getCart()) 
+                     }
+                  progressCount = 0   
+               break 
         }
         
     })
