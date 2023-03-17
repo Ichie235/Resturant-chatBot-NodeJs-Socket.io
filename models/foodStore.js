@@ -11,11 +11,6 @@ class Foodstore {
     save() {
         products.push(this);
     }
-    
-    // static findAll() {
-    //     return products;
-    // }
-
     static findById(prodId) {
         return products.filter(p => p.id == prodId);
     }

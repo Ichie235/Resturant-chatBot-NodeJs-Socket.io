@@ -8,9 +8,6 @@ function formatMessages(username,text){
       }
 };
 
-  // default:
-            //      socket.emit('message',formatMessages('Resturant-chat',`Your input ${msg} is invalid.
-            //                 <br>Please select <b>1</b> to see food options`))            
 
 module.exports =formatMessages
 
