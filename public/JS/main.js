@@ -1,107 +1,105 @@
-const chatForm = document.getElementById('chat-form')
-const formInput = document.getElementById('formInput')
-const chatMessages = document.querySelector('.chat-messages')
+const chatForm = document.getElementById("chat-form");
+const formInput = document.getElementById("formInput");
+const chatMessages = document.querySelector(".chat-messages");
 
 const socket = io();
 
-
 //Bot Messages from server
-socket.on('message',(message)=>{
-    console.log(message)
-    
-    outputBotMessage(message);
+socket.on("message", (message) => {
+  console.log(message);
 
-     // Scroll down
+  outputBotMessage(message);
+
+  // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
-})
+});
 
 //Resturant Chat messages from server
-socket.on('chats',(chatMsg)=>{
-    console.log(chatMsg)
+socket.on("chats", (chatMsg) => {
+  console.log(chatMsg);
 
-    outputResturantChat(chatMsg)
-    // outputResturantChat(chatMsg)
+  outputResturantChat(chatMsg);
+  // outputResturantChat(chatMsg)
 
-     // Scroll down
+  // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
-})
+});
 
 //Resturant Menu messages from server
-socket.on('MenuOption',(menu)=>{
-    console.log(menu)
+socket.on("MenuOption", (menu) => {
+  console.log(menu);
 
-    outputResturantMenu(menu)
+  outputResturantMenu(menu);
 
-     // Scroll down
+  // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
-})
+});
 
 //Resturant Menu messages from server
-socket.on('food menu',(food)=>{
-    console.log(food)
+socket.on("food menu", (food) => {
+  console.log(food);
 
-    outputFoodStore(food)
+  outputFoodStore(food);
 
-     // Scroll down
+  // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
-})
+});
 
 //Resturant Current Order Menu from server
-socket.on('CurrentOrder',(order)=>{
-    console.log(order)
-    outputFoodOrder(order)
-      // Scroll down
+socket.on("CurrentOrder", (order) => {
+  console.log(order);
+  outputFoodOrder(order);
+  // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
-})
+});
 
-chatForm.addEventListener('submit',(e)=>{
-    e.preventDefault();
+chatForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    let msg = e.target.elements.formInput.value
-    console.log(msg)
+  let msg = e.target.elements.formInput.value;
+  console.log(msg);
 
-    msg= msg.toLowerCase().trim();
+  msg = msg.toLowerCase().trim();
 
-    //Emit chat message to  server
-    socket.emit('ResturantChat',msg)
+  //Emit chat message to  server
+  socket.emit("ResturantChat", msg);
 
-    // Clear chat input
-    formInput.value= "";
-    formInput.focus()
-})
-
+  // Clear chat input
+  formInput.value = "";
+  formInput.focus();
+});
 
 // Output message from the Chat-bot to the DOM
-function outputBotMessage(message){
-    const div = document.createElement('div')
-    div.classList.add('chats')
-    div.innerHTML=`
+function outputBotMessage(message) {
+  const div = document.createElement("div");
+  div.classList.add("chats");
+  div.innerHTML = `
    
     <p style="text-align: left;>${message.username} <span>${message.time}</span></p>
     <p class="text" style="color:red;text-align:left;">${message.text}</p>
    `;
-    document.querySelector('.chat-messages').appendChild(div)
+  document.querySelector(".chat-messages").appendChild(div);
 }
 
 //output chat message from users to DOM
-function outputResturantChat(chatMsg){
-    const div = document.createElement('div')
-    div.classList.add('chats')
-    div.innerHTML=`
+function outputResturantChat(chatMsg) {
+  const div = document.createElement("div");
+  div.classList.add("chats");
+  div.innerHTML = `
     <div class="card mb-2 mt-3 ">
     <div class="card-body" style="text-align: right;>
     <p>Ichie <span>${chatMsg.time}</span></p>
     <p class="text" style="color: red;">${chatMsg.text}</p>
     </div>
     </div>`;
-    document.querySelector('.chat-messages').appendChild(div)
+  document.querySelector(".chat-messages").appendChild(div);
 }
 
 //output Select Menu message from Server  to DOM
-function outputResturantMenu(menu){
-    const div = document.createElement('div')
-    div.classList.add('chats')
-    div.innerHTML=`
+function outputResturantMenu(menu) {
+  const div = document.createElement("div");
+  div.classList.add("chats");
+  div.innerHTML = `
     <div class="card mb-2 mt-3 style="text-align: left;">
     <div class="card-body">
     <ul style="list-style-type:none;">
@@ -114,35 +112,41 @@ function outputResturantMenu(menu){
     </ul>
     </div>
     </div>`;
-    document.querySelector('.chat-messages').appendChild(div)
+  document.querySelector(".chat-messages").appendChild(div);
 }
 
-function outputFoodStore(menu){
-    const div = document.createElement('div')
-    div.classList.add('chats')
-    div.innerHTML=`
+function outputFoodStore(menu) {
+  const div = document.createElement("div");
+  div.classList.add("chats");
+  div.innerHTML = `
     <div class="card mb-2 mt-3" style="text-align: left>
     <div class="card-body">
     <p class="m-2">Please select food item to record</p>
-    ${Object.values(menu).map(key=>`<li style="list-style-type:none;">${Object.values(key).join(' .')}</li>`).join('')}
+    ${Object.values(menu)
+      .map(
+        (key) =>
+          `<li style="list-style-type:none;">${Object.values(key).join(
+            " ."
+          )}</li>`
+      )
+      .join("")}
     </div>
     </div>`;
-    document.querySelector('.chat-messages').appendChild(div)
+  document.querySelector(".chat-messages").appendChild(div);
 }
 
-function outputFoodOrder(order){
-    const div = document.createElement('div')
-    div.classList.add('chats')
-    div.innerHTML=`
+function outputFoodOrder(order) {
+  const div = document.createElement("div");
+  div.classList.add("chats");
+  div.innerHTML = `
     <div class="card mb-2 mt-3" style="text-align: left>
     <div class="card-body">
     <p class="m-2">Your current order :</p>
-    ${order.products.map(key=>`<li>${key.title}</li>`).join('')} 
+    ${order.products.map((key) => `<li>${key.title}</li>`).join("")} 
    <div><b>TOTAL PRICE IS</b>=> ${order.totalPrice} </div>
     </div>
     </div>`;
-    document.querySelector('.chat-messages').appendChild(div)
+  document.querySelector(".chat-messages").appendChild(div);
 }
-
 
 // ${Object.keys(menu).map(key=>`<li>${key}.${menu[key]}</li>`).join('')}
