@@ -122,7 +122,7 @@ io.on("connection", (socket) => {
                   "message",
                   formatMessages(
                     "Resturant-chat",
-                    `Order for ${Object.values(foodStore.bole.title).join("")}
+                    `Order for ${Object.values(foodStore.garri.title).join("")}
                                 Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`
                   )
                 );
@@ -149,12 +149,12 @@ io.on("connection", (socket) => {
             switch (progress) {
               case 2:
                 console.log("Abacha");
-                Cart.save(foodStore.garri);
+                Cart.save(foodStore.abacha);
                 socket.emit(
                   "message",
                   formatMessages(
                     "Resturant-chat",
-                    `Order for ${Object.values(foodStore.garri.title).join("")}
+                    `Order for ${Object.values(foodStore.abacha.title).join("")}
                                Received.<br>Please select <b> 1 </b> to add food to cart or select 99 to checkout order`
                   )
                 );
@@ -216,10 +216,8 @@ io.on("connection", (socket) => {
 
 app.use(express.static("public"));
 
-app.set("view engine", "ejs");
-
 app.get("/", (req, res) => {
-  res.render("ResturantChat");
+  res.sendFile(__dirname + "/index.html");
 });
 
 server.listen(PORT, () => {
