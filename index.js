@@ -167,6 +167,7 @@ io.on("connection", (socket) => {
         progressCount = 0;
         break;
     }
+    // sswitch for checkout order and view of current cart
     switch (msg) {
       case "99":
         if (Cart.getCart() === null) {
@@ -190,6 +191,7 @@ io.on("connection", (socket) => {
         progressCount = 0;
         break;
     }
+
     switch (msg) {
       case "97":
         if (Cart.getCart() === null) {
@@ -197,12 +199,35 @@ io.on("connection", (socket) => {
             "message",
             formatMessages(
               "Resturant-chat",
-              `No order to place.<br>Please select <b> 1 </b> to see list of food items`
+              `No order placed.<br>Please select <b> 1 </b> to see list of food items`
             )
           );
         } else {
-          Cart.getCart()
+          Cart.getCart();
           socket.emit("CurrentOrder", Cart.getCart());
+        }
+        progressCount = 0;
+        break;
+    }
+    switch (msg) {
+      case "0":
+        if (Cart.getCart() === null) {
+          socket.emit(
+            "message",
+            formatMessages(
+              "Resturant-chat",
+              `No order placed.<br>Please select <b> 1 </b> to see list of food items`
+            )
+          );
+        } else {
+          console.log(Object.keys(Cart.getCart()).map(key=> Cart.getCart()[key]=null))
+          socket.emit(
+            "message",
+            formatMessages(
+              "Resturant-chat",
+              `Order cancelled.<br>Please select <b> 1 </b> to see list of food items`
+            )
+          );
         }
         progressCount = 0;
         break;

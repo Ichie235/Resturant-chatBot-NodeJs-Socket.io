@@ -100,7 +100,7 @@ function outputResturantMenu(menu) {
   const div = document.createElement("div");
   div.classList.add("chats");
   div.innerHTML = `
-    <div class="card mb-2 mt-3 style="text-align: left;">
+    <div class="card mb-2 mt-3 w-75" style="text-align: left;">
     <div class="card-body">
     <ul style="list-style-type:none;">
     <li>
@@ -119,15 +119,15 @@ function outputFoodStore(menu) {
   const div = document.createElement("div");
   div.classList.add("chats");
   div.innerHTML = `
-    <div class="card mb-2 mt-3" style="text-align: left>
+    <div class="card mb-2 mt-3 w-75" style="text-align: left;">
     <div class="card-body">
     <p class="m-2">Please select food item to record</p>
     ${Object.values(menu)
       .map(
         (key) =>
           `<li style="list-style-type:none;">${Object.values(key).join(
-            " ."
-          )}</li>`
+            " "
+          )} Qty</li>`
       )
       .join("")}
     </div>
@@ -139,11 +139,48 @@ function outputFoodOrder(order) {
   const div = document.createElement("div");
   div.classList.add("chats");
   div.innerHTML = `
-    <div class="card mb-2 mt-3" style="text-align: left>
+    <div class="card mb-2 mt-3 w-75" style="text-align: left;">
     <div class="card-body">
     <p class="m-2">Your current order :</p>
-    ${order.products.map((key) => `<li>${key.title}</li>`).join("")} 
+    <div class="d-flex flex-row align-items-baseline">
+    <div class="table-responsive">
+    <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Ordered Items</th>
+    </tr>
+  </thead>
+    <tbody>
+   ${order.products
+     .map(
+       (key) => `
+         <tr>
+           <td>${key.title}</td>
+          </tr> `
+     )
+     .join("")}
+     </tbody>
+     </table>
+     </div>
+     <div class="table-responsive">
+     <table class="table table-sm table-striped">
+     <thead>
+     <tr>
+       <th scope="col">Quantity Ordered</th>
+     </tr>
+   </thead>
+     <tbody>
+     ${order.products
+   .map((key) => `<tr>
+   <td>${key.qty}</td>
+   </tr>`)
+   .join("")}
+   </tbody>
+   </table>
+   </div>
+  </div>
    <div><b>TOTAL PRICE IS</b>=> ${order.totalPrice} </div>
+  
     </div>
     </div>`;
   document.querySelector(".chat-messages").appendChild(div);
