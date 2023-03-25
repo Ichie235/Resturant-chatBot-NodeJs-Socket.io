@@ -5,7 +5,6 @@ class Foodstore {
     this.id = id;
     this.title = title;
     this.price = new Number(price);
-    this.currency = currency;
   }
 
   save() {
@@ -16,11 +15,11 @@ class Foodstore {
   }
 }
 
-const roastedCorn = new Foodstore("01", "Roasted Corn", 780, "Naira");
-const bole = new Foodstore("02", "Spicy Bole", 500, "Naira");
-const garri = new Foodstore("03", "Granulated Garri", 1500, "Naira");
-const ewa = new Foodstore("04", "Ewa", 2500, "Naira");
-const abacha = new Foodstore("05", "Abacha and kpomo", 3500, "Naira");
+const roastedCorn = new Foodstore("01", "Roasted Corn", 780);
+const bole = new Foodstore("02", "Spicy Bole", 500);
+const garri = new Foodstore("03", "Granulated Garri", 1500);
+const ewa = new Foodstore("04", "Ewa", 2500);
+const abacha = new Foodstore("05", "Abacha and kpomo", 3500);
 
 module.exports = {
   roastedCorn,

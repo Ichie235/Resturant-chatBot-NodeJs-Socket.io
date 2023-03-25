@@ -8,4 +8,6 @@ function formatMessages(username, text) {
   };
 }
 
-module.exports = formatMessages;
+
+
+module.exports = formatMessages

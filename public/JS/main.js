@@ -2,11 +2,12 @@ const chatForm = document.getElementById("chat-form");
 const formInput = document.getElementById("formInput");
 const chatMessages = document.querySelector(".chat-messages");
 
+
 const socket = io();
 
 //Bot Messages from server
 socket.on("message", (message) => {
-  console.log(message);
+  //console.log(message);
 
   outputBotMessage(message);
 
@@ -16,18 +17,17 @@ socket.on("message", (message) => {
 
 //Resturant Chat messages from server
 socket.on("chats", (chatMsg) => {
-  console.log(chatMsg);
+  //console.log(chatMsg);
 
   outputResturantChat(chatMsg);
-  // outputResturantChat(chatMsg)
-
+  
   // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 //Resturant Menu messages from server
 socket.on("MenuOption", (menu) => {
-  console.log(menu);
+  //console.log(menu);
 
   outputResturantMenu(menu);
 
@@ -37,8 +37,7 @@ socket.on("MenuOption", (menu) => {
 
 //Resturant Menu messages from server
 socket.on("food menu", (food) => {
-  console.log(food);
-
+  
   outputFoodStore(food);
 
   // Scroll down
@@ -47,7 +46,6 @@ socket.on("food menu", (food) => {
 
 //Resturant Current Order Menu from server
 socket.on("CurrentOrder", (order) => {
-  console.log(order);
   outputFoodOrder(order);
   // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -57,8 +55,7 @@ chatForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   let msg = e.target.elements.formInput.value;
-  console.log(msg);
-
+  
   msg = msg.toLowerCase().trim();
 
   //Emit chat message to  server
@@ -74,7 +71,6 @@ function outputBotMessage(message) {
   const div = document.createElement("div");
   div.classList.add("chats");
   div.innerHTML = `
-   
     <p style="text-align: left;>${message.username} <span>${message.time}</span></p>
     <p class="text" style="color:red;text-align:left;">${message.text}</p>
    `;
@@ -119,17 +115,50 @@ function outputFoodStore(menu) {
   const div = document.createElement("div");
   div.classList.add("chats");
   div.innerHTML = `
-    <div class="card mb-2 mt-3 w-75" style="text-align: left;">
+    <div class="card mb-2 mt-3" style="text-align: left;">
     <div class="card-body">
-    <p class="m-2">Please select food item to record</p>
-    ${Object.values(menu)
-      .map(
-        (key) =>
-          `<li style="list-style-type:none;">${Object.values(key).join(
-            " "
-          )} Qty</li>`
-      )
-      .join("")}
+    <p class="m-2">Please select food item by S/N to record</p>
+      <div class="d-flex flex-row align-items-baseline">
+      <div class="table-responsive">
+      <table class="table table-sm table-striped">
+      <thead>
+      <tr>
+        <th scope="col">S/N</th>
+      </tr>
+    </thead>
+      <tbody>
+        ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.id).join("")}</td></tr>`).join('')}
+        </tbody>
+        </table>
+        </div>
+    
+    <div class="table-responsive">
+    <table class="table table-sm table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Food Items</th>
+    </tr>
+  </thead>
+    <tbody>
+      ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.title).join("")}</td></tr>`).join('')}
+      </tbody>
+      </table>
+      </div>
+
+      <div class="table-responsive">
+      <table class="table table-sm table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Price(Naira)</th>
+      </tr>
+    </thead>
+      <tbody>
+        ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.price).join("")}</td></tr>`).join('')}
+        </tbody>
+        </table>
+        </div>
+        </div>
+    
     </div>
     </div>`;
   document.querySelector(".chat-messages").appendChild(div);
@@ -171,10 +200,12 @@ function outputFoodOrder(order) {
    </thead>
      <tbody>
      ${order.products
-   .map((key) => `<tr>
+       .map(
+         (key) => `<tr>
    <td>${key.qty}</td>
-   </tr>`)
-   .join("")}
+   </tr>`
+       )
+       .join("")}
    </tbody>
    </table>
    </div>
