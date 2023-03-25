@@ -203,7 +203,7 @@ io.on("connection", (socket) => {
             )
           );
         } else {
-          Cart.getCart();
+          console.log(Cart.getCart());
           socket.emit("CurrentOrder", Cart.getCart());
         }
         progressCount = 0;

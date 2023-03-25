@@ -9,9 +9,11 @@ module.exports = class Cart {
       if (existingProductIndex >= 0) {
         const existingProduct = cart.products[existingProductIndex];
         existingProduct.qty += 1;
+        existingProduct.quantity -= 1
         cart.totalPrice += product.price;
       } else {
         product.qty = 1;
+        product.quantity -= 1
         cart.products.push(product);
         cart.totalPrice += product.price;
       }
@@ -19,6 +21,7 @@ module.exports = class Cart {
       cart = { products: [], totalPrice: 0 };
 
       product.qty = 1;
+      product.quantity -= 1
       cart.products.push(product);
       cart.totalPrice += product.price;
     }

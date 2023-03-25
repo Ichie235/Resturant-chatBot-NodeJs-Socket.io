@@ -117,7 +117,7 @@ function outputFoodStore(menu) {
   div.innerHTML = `
     <div class="card mb-2 mt-3" style="text-align: left;">
     <div class="card-body">
-    <p class="m-2">Please select food item by S/N to record</p>
+    <p class="m-2">Please select food item by <b>S/N</b> to record</p>
       <div class="d-flex flex-row align-items-baseline">
       <div class="table-responsive">
       <table class="table table-sm table-striped">
@@ -157,6 +157,19 @@ function outputFoodStore(menu) {
         </tbody>
         </table>
         </div>
+
+        <div class="table-responsive">
+        <table class="table table-sm table-striped">
+        <thead>
+        <tr>
+          <th scope="col">Quantity Available</th>
+        </tr>
+      </thead>
+        <tbody>
+          ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.quantity).join("")}</td></tr>`).join('')}
+          </tbody>
+          </table>
+          </div>
         </div>
     
     </div>
