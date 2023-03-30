@@ -119,47 +119,41 @@ function outputFoodStore(menu) {
     <div class="card-body">
     <p class="m-2">Please select food item by <b>S/N</b> to record</p>
       <div class="d-flex flex-row align-items-baseline">
-      <div class="table-responsive">
-      <table class="table table-sm table-striped">
+      <table class="table table-sm table-striped" style="width:5%;">
       <thead>
       <tr>
         <th scope="col">S/N</th>
       </tr>
     </thead>
       <tbody>
-        ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.id).join("")}</td></tr>`).join('')}
+        ${Object.entries(menu).map(key=>`<tr><td class="text-nowrap">${Object.values(key).map(p=>p.id).join("")}</td></tr>`).join('')}
         </tbody>
         </table>
-        </div>
     
-    <div class="table-responsive">
-    <table class="table table-sm table-striped">
+    <table class="table table-sm table-striped" style="width:19%;">
     <thead>
     <tr>
       <th scope="col">Food Items</th>
     </tr>
   </thead>
     <tbody>
-      ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.title).join("")}</td></tr>`).join('')}
+      ${Object.entries(menu).map(key=>`<tr><td class="text-nowrap">${Object.values(key).map(p=>p.title).join("")}</td></tr>`).join('')}
       </tbody>
       </table>
-      </div>
-
-      <div class="table-responsive">
-      <table class="table table-sm table-striped">
+    
+      <table class="table table-sm table-striped" style="width:12%;">
       <thead>
       <tr>
-        <th scope="col">Price(Naira)</th>
+        <th scope="col">Price<br>(Naira)</th>
       </tr>
     </thead>
       <tbody>
         ${Object.entries(menu).map(key=>`<tr><td>${Object.values(key).map(p=>p.price).join("")}</td></tr>`).join('')}
         </tbody>
         </table>
-        </div>
-
+    
         <div class="table-responsive">
-        <table class="table table-sm table-striped">
+        <table class="table table-sm table-striped" style="width:15%;">
         <thead>
         <tr>
           <th scope="col">Quantity Available</th>
